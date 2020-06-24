@@ -1,3 +1,57 @@
+<?php
+    require_once "vendor/autoload.php";
+
+    MercadoPago\SDK::setAccessToken('APP_USR-6718728269189792-112017-dc8b338195215145a4ec035fdde5cedf-491494389');
+    MercadoPago\SDK::setIntegratorId("dev_24c65fb163bf11ea96500242ac130004");
+    $preference = new MercadoPago\Preference();
+    $payer = new MercadoPago\Payer();
+    $payer->name = "Lalo";
+    $payer->surname = "Landa";
+    $payer->email = "test_user_58295862@testuser.com";
+    $payer->phone = array(
+        "area_code" => "52",
+        "number" => "5549737300"
+    );
+
+    $payer->address = array(
+        "street_name" => "Insurgentes Sur",
+        "street_number" => 1602,
+        "zip_code" => "03940"
+    );
+    $preference->payer = $payer;
+
+    $item = new MercadoPago\Item();
+    $item->id ="1234";
+    $item->title = $_POST['title'];
+    $item->description = "Dispositivo móvil de Tienda e-commerce";
+    $item->picture_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR0dSz8_NynSKxquT_zK3kFbGCw3AqwBvdQZLwaQAMy0wLEzyMcWfxRO_tm_Jial5W61wiYoSWg&usqp=CAc";
+
+    $item->quantity = 1;
+    $item->unit_price = $_POST['price'];
+    $preference->items = array($item);
+    $preference->external_reference = "armzaizar@gmail.com";
+    
+    $preference->payment_methods = array(
+        "excluded_payment_methods" => array(
+            array("id" => "amex")
+        ),
+        "excluded_payment_types" => array(
+            array("id" => "atm")
+        ),
+        "installments" => 6
+    );
+
+    $preference->back_urls = array(
+    "success" => "https://www.tu-sitio/success",
+    "failure" => "http://www.tu-sitio/failure",
+    "pending" => "http://www.tu-sitio/pending"
+    );
+    $preference->auto_return = "approved";
+   
+    $preference->notification_url = "http://selling.serveftp.com/ApiPruebas/api/MercadoPago";
+    $preference->save();
+?>
+
 <!DOCTYPE html>
 <html class="supports-animation supports-columns svg no-touch no-ie no-oldie no-ios supports-backdrop-filter as-mouseuser" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
